@@ -1,1 +1,1 @@
-# Elm-Counter
+# Elm-Hangman
