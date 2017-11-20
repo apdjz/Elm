@@ -1,0 +1,207 @@
+var _user$project$Main$letter_view = function (letter) {
+	var the_letter = function () {
+		var _p0 = letter.guessed;
+		if (_p0 === true) {
+			return _elm_lang$core$String$fromChar(letter.letter);
+		} else {
+			return '-';
+		}
+	}();
+	return A2(
+		_elm_lang$html$Html$li,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(the_letter),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Main$stage = function (model) {
+	return A2(
+		_elm_lang$html$Html$ul,
+		{ctor: '[]'},
+		A2(_elm_lang$core$List$map, _user$project$Main$letter_view, model.letters));
+};
+var _user$project$Main$mapLetter = F2(
+	function (letter, _p1) {
+		var _p2 = _p1;
+		var _p6 = _p2._1;
+		var _p5 = _p2._2;
+		var hit = _elm_lang$core$Native_Utils.eq(letter.letter, _p5) && (!letter.guessed);
+		var new_letter = function () {
+			var _p3 = hit;
+			if (_p3 === false) {
+				return letter;
+			} else {
+				return _elm_lang$core$Native_Utils.update(
+					letter,
+					{guessed: true});
+			}
+		}();
+		var new_letters = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_p2._0,
+			{
+				ctor: '::',
+				_0: new_letter,
+				_1: {ctor: '[]'}
+			});
+		var new_hits = function () {
+			var _p4 = hit;
+			if (_p4 === false) {
+				return _p6;
+			} else {
+				return _p6 + 1;
+			}
+		}();
+		return {ctor: '_Tuple3', _0: new_letters, _1: new_hits, _2: _p5};
+	});
+var _user$project$Main$cleanUpdate = F2(
+	function (guess, model) {
+		var _p7 = A3(
+			_elm_lang$core$List$foldl,
+			_user$project$Main$mapLetter,
+			{
+				ctor: '_Tuple3',
+				_0: {ctor: '[]'},
+				_1: 0,
+				_2: guess
+			},
+			model.letters);
+		var new_letters = _p7._0;
+		var hits = _p7._1;
+		var same_guess = _p7._2;
+		var new_misses = function () {
+			var _p8 = _elm_lang$core$Native_Utils.cmp(hits, 0) > 0;
+			if (_p8 === true) {
+				return model.misses;
+			} else {
+				return model.misses + 1;
+			}
+		}();
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{misses: new_misses, letters: new_letters});
+	});
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p9 = msg;
+		var _p10 = _elm_lang$core$String$uncons(
+			_elm_lang$core$String$reverse(_p9._0));
+		if (_p10.ctor === 'Just') {
+			return A2(_user$project$Main$cleanUpdate, _p10._0._0, model);
+		} else {
+			return model;
+		}
+	});
+var _user$project$Main$Letter = F2(
+	function (a, b) {
+		return {guessed: a, letter: b};
+	});
+var _user$project$Main$toLetter = function (c) {
+	return A2(_user$project$Main$Letter, false, c);
+};
+var _user$project$Main$initialModel = {
+	misses: 0,
+	target: 'hangman',
+	letters: A2(
+		_elm_lang$core$List$map,
+		_user$project$Main$toLetter,
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Native_Utils.chr('h'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Native_Utils.chr('a'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Native_Utils.chr('n'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Native_Utils.chr('g'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$core$Native_Utils.chr('m'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.chr('a'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Native_Utils.chr('n'),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}
+		})
+};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {misses: a, target: b, letters: c};
+	});
+var _user$project$Main$Guess = function (a) {
+	return {ctor: 'Guess', _0: a};
+};
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Hangman'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h2,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							_elm_lang$core$Basics$toString(model.misses)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Main$stage(model),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$placeholder('Guess'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$Guess),
+									_1: {ctor: '[]'}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('TBD'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Main$main = _elm_lang$html$Html$beginnerProgram(
+	{model: _user$project$Main$initialModel, view: _user$project$Main$view, update: _user$project$Main$update})();

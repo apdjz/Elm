@@ -9,7 +9,7 @@ type Msg = Increment | Decrement
 update msg model =
   case msg of
     Increment ->
-      model + 2
+      model + 1
 
     Decrement ->
       model - 1

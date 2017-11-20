@@ -1,7 +1,7 @@
 {
   "name": "todo-list",
   "version": "1.0.0",
-  "description": "Simple counter written in elm",
+  "description": "Simple todo list written in elm",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
